@@ -15,6 +15,15 @@ const espAi = require("esp-ai");
 espAi({
     ... 
 
+    // 配置使用插件并且为插件配置api-key
+    llm_server: "esp-ai-plugin-llm-example",
+    api_key: {
+        "esp-ai-plugin-llm-example": {
+            token: "ht-xxx"
+        },
+    },
+
+    // 引入插件
     plugins: [ 
         require("esp-ai-plugin-llm-example")
     ]
