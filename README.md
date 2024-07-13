@@ -1,4 +1,4 @@
-# esp-ai-plugin-iat-example [![npm](https://img.shields.io/npm/v/esp-ai-plugin-llm-example.svg)](https://www.npmjs.com/package/esp-ai-plugin-llm-example) [![npm](https://img.shields.io/npm/dm/esp-ai-plugin-llm-example.svg?style=flat)](https://www.npmjs.com/package/esp-ai-plugin-llm-example)
+# esp-ai-plugin-llm-example [![npm](https://img.shields.io/npm/v/esp-ai-plugin-llm-example.svg)](https://www.npmjs.com/package/esp-ai-plugin-llm-example) [![npm](https://img.shields.io/npm/dm/esp-ai-plugin-llm-example.svg?style=flat)](https://www.npmjs.com/package/esp-ai-plugin-llm-example)
 
 ESP-AI LLM插件开发案例
 
