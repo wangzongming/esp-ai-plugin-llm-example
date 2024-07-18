@@ -9,24 +9,30 @@ module.exports = {
     // 插件类型 LLM | TTS | IAT
     type: "LLM",
     /**
-     * 插件逻辑
-     * 
-     * @param {String} text 用户提问的句子
-     * @param {({ text, texts })=>void} cb llm响应后需要调用的方法
-     * @param {({ text })=>void} onError 错误时，需要调用，并传入错误提示语
-     * @param {Object[]} llm_historys 对话历史
+     * 大语言模型插件
+     * @param {String}      device_id           设备id 
+     * @param {Number}      devLog              日志输出等级，为0时不应该输出任何日志   
+     * @param {Object}      api_key             用户配置的key   
+     * @param {String}      text                对话文本
+     * @param {Function}    cb                  LLM 服务返回音频数据时调用，eg: cb({ text, texts })
+     * @param {Function}    llmServerErrorCb    与 LLM 服务之间发生错误时调用，并且传入错误说明，eg: llmServerErrorCb("意外错误")
+     * @param {Function}    llm_params_set      用户配置的设置 LLM 参数的函数
+     * @param {Function}    logWSServer         将 ws 服务回传给框架，如果不是ws服务可以这么写: logWSServer({ close: ()=> {} })
+     * @param {{role, content}[]}  llm_init_messages   用户配置的初始化时的对话数据
+     * @param {{role, content}[]}  llm_historys        llm 历史对话数据
+     * @param {Function}    log                 为保证日志输出的一致性，请使用 log 对象进行日志输出，eg: log.error("错误信息")、log.info("普通信息")、log.llm_info("llm 专属信息")
+     *  
     */
-    main({ text, llm_historys, onError, cb }) {
-        // 获取到用户配置
-        const { devLog, api_key, llm_server, llm_init_messages = [], llm_params_set } = G_config;
-        devLog && console.log('\n\n=== 开始请求 LLM，输入: ', text, " ===");
-        devLog && console.log("对话记录：\n", llm_historys) 
+    main({ device_id, devLog, api_key, text, llmServerErrorCb, llm_init_messages, llm_historys, cb, llm_params_set, logWSServer }) {
+
+        devLog && console.log("对话记录：\n", llm_historys)
 
         // 请自行约定接口 key 需要配置什么字段
-        const config = {
-            api_key: api_key[llm_server]?.apiKey,
-            llm: api_key[llm_server]?.llm,
-        }
+        const config = { ...api_key }
+
+        // 连接 ws 服务后并且上报给框架
+        // const llm_ws = new WebSocket("ws://xxx");
+        // logWSServer(llm_ws)
 
         /**
          * 这个变量是固定写法，需要回传给 cb()
@@ -45,14 +51,14 @@ module.exports = {
                 "请尽管吩咐！",
             ];
 
-            function reData(){
+            function reData() {
                 const res_text = moni_data.splice(0, 1);
-                cb(res_text[0], moni_data.length); 
+                cb(res_text[0], moni_data.length);
                 moni_data.length && setTimeout(reData, 1000);
             }
-            reData(); 
+            reData();
         }
- 
+
 
         // 请求llm服务的参数, 将对话信息给到参数中
         const r_params = {
@@ -72,6 +78,6 @@ module.exports = {
             devLog && console.log('LLM 输出 ：', chunk_text);
             texts["count_text"] += chunk_text;
             cb({ text, texts, is_over: length === 0 })
-        })  
+        })
     }
 }
