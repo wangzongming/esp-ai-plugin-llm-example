@@ -23,7 +23,7 @@ module.exports = {
      * @param {Function}    log                 为保证日志输出的一致性，请使用 log 对象进行日志输出，eg: log.error("错误信息")、log.info("普通信息")、log.llm_info("llm 专属信息")
      *  
     */
-    main({ device_id, devLog, api_key, text, llmServerErrorCb, llm_init_messages, llm_historys, cb, llm_params_set, logWSServer }) {
+    main({ device_id, devLog, api_key, text, llmServerErrorCb, llm_init_messages = [], llm_historys = [], cb, llm_params_set, logWSServer }) {
 
         devLog && console.log("对话记录：\n", llm_historys)
 
