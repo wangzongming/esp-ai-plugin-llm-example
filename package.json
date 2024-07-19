@@ -1,6 +1,7 @@
 {
   "name": "esp-ai-plugin-llm-example",
-  "version": "0.0.1",
+  "keywords": ["esp-ai-plugin", "esp-ai-plugin-llm"],
+  "version": "0.0.2",
   "description": "ESP-AI LLM Plugin Example | ESP-AI LLM 插件开发案例",
   "main": "index.js",
   "dependencies": { },
